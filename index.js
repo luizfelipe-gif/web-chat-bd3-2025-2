@@ -5,6 +5,7 @@ const path = require('path');
 const socketIO = require('socket.io');
 const app = express();
 const server = http.createServer(app);
+const io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'public'));
@@ -15,4 +16,17 @@ app.use('/', (request, response) => {
 
 server.listen(3000, () => {
    console.log("Servidor rodando em - http://localhost:3000")
+});
+
+let messages = [];
+
+io.on('connection', socket => {
+   console.log("ID de usuário conectado: " + socket.id);
+
+   socket.emit("previousMessage", messages);
+
+   socket.on("sendMessage", data => {
+      messages.push(data);
+      socket.broadcast.emit()
+   });
 });

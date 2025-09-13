@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="pt-br">
-
     <head>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>CHAT V3</title>
@@ -13,19 +11,17 @@
 
         <!-- Importa o Jquery para a aplicação frontend: -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
         <!-- Importa o SocketIO para a aplicação frontend: -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
-
     </head>
 
     <body>
 
         <div class="container">
-        
             <h1>##### APP DE CHAT COM MONGODB #####</h1>
 
             <form id="chat">
-
                 <input type="text" name="username" placeholder="Digite seu usuario">
                 <br />
                 <input multiple type="text" name="message" placeholder="Digite sua mensagem">
@@ -34,13 +30,58 @@
                 
                 <!-- Carega todas as mensagens enviadas: -->
                 <div class="messages"></div>
-
             </form>
 
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
 
-    </body>
+        <script>
+            const socket = io('http://localhost:3000')
 
+            function renderMessage(message) {
+               $('.messages').append('<div class="message"><strong>'
+               + message.author + message.data_hora + '</strong>: '+ message.message +'</div>');
+            }
+
+            socket.on('previousMessage', function(messages) {
+               for (message of messages) {
+                  renderMessage(message);
+               }
+            });
+
+            socket.on('receivedMessage', function(message) {
+               renderMessage(message);
+            });
+            
+
+            $('#chat').submit(function(event) {
+               event.preventDefault();
+
+               var author = $('input[name=username]').val();
+               var message = $('input[name=message]').val();
+
+               if (author.length && message.length) {
+                  /* Cria um objeto javascript para recuperar a data e a hora do envio da mensagem: */
+                  let data_hora_obj = new Date();
+
+
+                  let data_hora_msg = `
+                     [${data_hora_obj.getDate()}/${data_hora_obj.getMonth()}/${data_hora_obj.getFullYear()}-${data_hora_obj.getHours()}:
+                     ${data_hora_obj.getMinutes()}:${data_hora_obj.getSeconds()}]`;
+
+
+                  var messageObject = {
+                     author: author,
+                     data_hora:data_hora_msg,
+                     message: message,
+                  };
+
+                  renderMessage(messageObject);
+
+                  socket.emit('sendMessage', messageObject);
+                }
+            });
+        </script>
+    </body>
 </html>
