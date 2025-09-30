@@ -4,8 +4,8 @@
   "description": "Um web-chat simples usando MongoDB ",
   "main": "index.js",
   "scripts": {
-   "start": "nodemon index.js"
-},
+    "start": "nodemon index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/luizfelipe-gif/web-chat-bd3-2025-2.git"
@@ -25,6 +25,8 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.18.1",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

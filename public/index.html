@@ -15,12 +15,10 @@
         <!-- Importa o SocketIO para a aplicação frontend: -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
     </head>
-
     <body>
 
         <div class="container">
             <h1>##### APP DE CHAT COM MONGODB #####</h1>
-
             <form id="chat">
                 <input type="text" name="username" placeholder="Digite seu usuario">
                 <br />
@@ -31,7 +29,6 @@
                 <!-- Carega todas as mensagens enviadas: -->
                 <div class="messages"></div>
             </form>
-
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
@@ -53,11 +50,9 @@
             socket.on('receivedMessage', function(message) {
                renderMessage(message);
             });
-            
 
             $('#chat').submit(function(event) {
                event.preventDefault();
-
                var author = $('input[name=username]').val();
                var message = $('input[name=message]').val();
 
@@ -65,11 +60,9 @@
                   /* Cria um objeto javascript para recuperar a data e a hora do envio da mensagem: */
                   let data_hora_obj = new Date();
 
-
                   let data_hora_msg = `
                      [${data_hora_obj.getDate()}/${data_hora_obj.getMonth()}/${data_hora_obj.getFullYear()}-${data_hora_obj.getHours()}:
                      ${data_hora_obj.getMinutes()}:${data_hora_obj.getSeconds()}]`;
-
 
                   var messageObject = {
                      author: author,
